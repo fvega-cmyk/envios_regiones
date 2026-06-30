@@ -1,12 +1,10 @@
 name: Seguimiento API Envíame
 
-# Corre automáticamente y también permite ejecutarlo a mano desde la pestaña "Actions".
-# Nota: el cron de GitHub Actions a veces se atrasa; si necesitas puntualidad,
-# puedes dispararlo desde cron-job.org igual que tus otros flujos.
+# Se dispara manualmente (botón "Run workflow") o vía cron-job.org, que llama
+# a la API de GitHub cada 30 minutos. No usamos el cron nativo de GitHub porque
+# tiende a atrasarse.
 on:
-  workflow_dispatch:        # botón para ejecutarlo manualmente
-  schedule:
-    - cron: "0 12 * * *"    # todos los días a las 12:00 UTC (ajusta a tu horario)
+  workflow_dispatch:
 
 jobs:
   seguimiento:
