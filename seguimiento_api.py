@@ -45,12 +45,14 @@ SHEET_ID = os.environ["SHEET_ID"]
 HOJA = os.environ.get("HOJA_SALIDA", "Seguimiento API")
 
 LIMIT = int(os.environ.get("LIMIT", "100"))
-DIAS_ATRAS = os.environ.get("DIAS_ATRAS", "90").strip()   # por defecto, últimos 60 días
+DIAS_ATRAS = os.environ.get("DIAS_ATRAS", "60").strip()   # por defecto, últimos 60 días
 DELIVERY_STATUS_ID = os.environ.get("DELIVERY_STATUS_ID", "").strip()
 VALUE_INPUT = os.environ.get("VALUE_INPUT", "USER_ENTERED")
 
 # Estados que NO se escriben en la hoja (comparación sin distinguir mayúsculas).
-ESTADOS_EXCLUIDOS = {"eliminado"}
+# Vacío = no se excluye ninguno (muestra TODOS, incluso "Eliminado").
+# Para volver a ocultar eliminados, usa:  ESTADOS_EXCLUIDOS = {"eliminado"}
+ESTADOS_EXCLUIDOS = set()
 
 # Encabezados = campos que entrega la API (objetos anidados aplanados con "_").
 ENCABEZADOS = [
@@ -117,7 +119,8 @@ def construir_filtros_fecha():
         return {}
     hoy = datetime.now()
     desde = hoy - timedelta(days=int(DIAS_ATRAS))
-    return {"date_from": desde.strftime("%Y-%m-%d"), "date_to": hoy.strftime("%Y-%m-%d")}
+    hasta = hoy + timedelta(days=1)   # +1 día para incluir TODO el día de hoy
+    return {"date_from": desde.strftime("%Y-%m-%d"), "date_to": hasta.strftime("%Y-%m-%d")}
 
 
 # ---------------------------------------------------------------------------
