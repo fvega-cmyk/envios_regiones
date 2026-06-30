@@ -52,7 +52,7 @@ VALUE_INPUT = os.environ.get("VALUE_INPUT", "USER_ENTERED")
 # Estados que NO se escriben en la hoja (comparación sin distinguir mayúsculas).
 # Vacío = no se excluye ninguno (muestra TODOS, incluso "Eliminado").
 # Para volver a ocultar eliminados, usa:  ESTADOS_EXCLUIDOS = {"eliminado"}
-ESTADOS_EXCLUIDOS = set()
+ESTADOS_EXCLUIDOS = {"eliminado"}
 
 # Encabezados = campos que entrega la API (objetos anidados aplanados con "_").
 ENCABEZADOS = [
@@ -185,7 +185,7 @@ def main():
     ]
     excluidos = antes - len(envios)
     if excluidos:
-        print(f"Excluidos por estado ({', '.join(ESTADOS_EXCLUIDOS)}): {"Eliminado"}")
+        print(f"Excluidos por estado ({', '.join(ESTADOS_EXCLUIDOS)}): {excluidos}")
 
     filas = [ENCABEZADOS] + [aplanar(e) for e in envios]
 
