@@ -45,7 +45,7 @@ SHEET_ID = os.environ["SHEET_ID"]
 HOJA = os.environ.get("HOJA_SALIDA", "Seguimiento API")
 
 LIMIT = int(os.environ.get("LIMIT", "100"))
-DIAS_ATRAS = os.environ.get("DIAS_ATRAS", "60").strip()   # por defecto, últimos 60 días
+DIAS_ATRAS = os.environ.get("DIAS_ATRAS", "90").strip()   # por defecto, últimos 60 días
 DELIVERY_STATUS_ID = os.environ.get("DELIVERY_STATUS_ID", "").strip()
 VALUE_INPUT = os.environ.get("VALUE_INPUT", "USER_ENTERED")
 
