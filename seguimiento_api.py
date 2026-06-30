@@ -45,9 +45,12 @@ SHEET_ID = os.environ["SHEET_ID"]
 HOJA = os.environ.get("HOJA_SALIDA", "Seguimiento API")
 
 LIMIT = int(os.environ.get("LIMIT", "100"))
-DIAS_ATRAS = os.environ.get("DIAS_ATRAS", "").strip()
+DIAS_ATRAS = os.environ.get("DIAS_ATRAS", "60").strip()   # por defecto, últimos 60 días
 DELIVERY_STATUS_ID = os.environ.get("DELIVERY_STATUS_ID", "").strip()
 VALUE_INPUT = os.environ.get("VALUE_INPUT", "USER_ENTERED")
+
+# Estados que NO se escriben en la hoja (comparación sin distinguir mayúsculas).
+ESTADOS_EXCLUIDOS = {"eliminado"}
 
 # Encabezados = campos que entrega la API (objetos anidados aplanados con "_").
 ENCABEZADOS = [
@@ -170,6 +173,16 @@ def main():
     print("Descargando envíos desde Envíame (v2)...")
     envios = descargar_envios()
     print(f"Total descargado: {len(envios)} envíos.")
+
+    # Excluir estados no deseados (ej. "Eliminado").
+    antes = len(envios)
+    envios = [
+        e for e in envios
+        if str((e.get("status") or {}).get("name") or "").strip().lower() not in ESTADOS_EXCLUIDOS
+    ]
+    excluidos = antes - len(envios)
+    if excluidos:
+        print(f"Excluidos por estado ({', '.join(ESTADOS_EXCLUIDOS)}): {excluidos}")
 
     filas = [ENCABEZADOS] + [aplanar(e) for e in envios]
 
