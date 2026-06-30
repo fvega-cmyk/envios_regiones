@@ -185,7 +185,7 @@ def main():
     ]
     excluidos = antes - len(envios)
     if excluidos:
-        print(f"Excluidos por estado ({', '.join(ESTADOS_EXCLUIDOS)}): {"eliminado"}")
+        print(f"Excluidos por estado ({', '.join(ESTADOS_EXCLUIDOS)}): {"Eliminado"}")
 
     filas = [ENCABEZADOS] + [aplanar(e) for e in envios]
 
