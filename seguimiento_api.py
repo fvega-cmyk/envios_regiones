@@ -139,6 +139,11 @@ def descargar_envios():
     while True:
         params = dict(params_base, page=page)
         resp = requests.get(url, headers=headers, params=params, timeout=60)
+                resp = requests.get(url, headers=headers, params=params)
+        if resp.status_code != 200:
+            print("STATUS:", resp.status_code)
+            print("BODY:", resp.text[:1000])
+            print("HEADERS:", dict(resp.headers))
         resp.raise_for_status()
         cuerpo = resp.json()
         lote = cuerpo.get("data", []) or []
